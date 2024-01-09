@@ -39,7 +39,7 @@ const puppeteer = require('puppeteer');
     try {
       image = await page.evaluate(el => el.querySelector('.s-image').getAttribute('src'), laptop);
     } catch(err) {
-      // console.log('no image found for element');
+      console.log('no image found for element');
     }
     
     // for each element try to receive page URL
