@@ -12,12 +12,11 @@ const puppeteer = require('puppeteer');
 
   const laptops = await page.$$('.s-result-item');
 
-  let transformedLaptops = [];
+  let laptomItems = [];
 
   for (const laptop of laptops) {
     let title = null;
     let priceDollar = null;
-    let priceCent = null
     let image = null;
     let url = null;
 
@@ -31,7 +30,7 @@ const puppeteer = require('puppeteer');
 
     // for each element try to retrieve the price
     try { 
-      priceDollar = await page.evaluate(el => el.querySelector('span .a-offscreen')?.textContent, laptop);
+      priceDollar = await page.evaluate(el => el.querySelector('span .a-price > .a-offscreen')?.textContent, laptop);
     } catch(err) {
       console.log('no price found for this element');
     }
@@ -40,7 +39,7 @@ const puppeteer = require('puppeteer');
     try {
       image = await page.evaluate(el => el.querySelector('.s-image').getAttribute('src'), laptop);
     } catch(err) {
-      console.log('no image found for element');
+      // console.log('no image found for element');
     }
     
     // for each element try to receive page URL
@@ -49,14 +48,15 @@ const puppeteer = require('puppeteer');
     } catch (err) {
       console.log('No URL found for this element');
     }
-    if (title !== null) {
-      transformedLaptops.push({
+    if (title !== null && title!==undefined) {
+      laptomItems.push({
         title: title,
-        price: `${priceDollar}${priceCent}`,
+        price: priceDollar,
         imageUrl: image,
         pageUrl: url
       });
     }
   }
+  console.log(laptomItems);
   // await browser.close();
 })();
