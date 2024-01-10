@@ -54,11 +54,14 @@ const fs = require('fs');
         // console.log('No URL found for this element');
       }
 
+      //for each element try to receive review and bought past month 
       try {
         review = await page.evaluate(el => el.querySelector('div.a-section.a-spacing-none.a-spacing-top-micro')?.textContent, laptop);
       } catch (err) {
         // console.log('No URL found for this element');
       }
+
+      // for each element try to receive delivery date
       try {
         delivery = await page.evaluate(el => el.querySelector('div.s-align-children-center')?.textContent, laptop);
       } catch (err) {
