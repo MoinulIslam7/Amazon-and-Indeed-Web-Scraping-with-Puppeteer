@@ -13,7 +13,7 @@ const fs = require('fs');
 
   const laptops = await page.$$('.s-result-item');
 
-  let laptomItems = [];
+  let laptopItems = [];
   // let isBtnDisables = false;
   // while (isBtnDisables) {
   for (const laptop of laptops) {
@@ -52,12 +52,21 @@ const fs = require('fs');
       console.log('No URL found for this element');
     }
     if (title !== null && title !== undefined) {
-      laptomItems.push({ title: title, price: price, imageUrl: image, pageUrl: url });
-      fs.appendFile('result.csv', `{\ntitle : "${title}",\nprice : "${price}",\nimage : "${image}",\nurl : "${url}"\n}\n`, function (err) {
-        if (err) throw err;
-      });
+      laptopItems.push({ title: title, price: price, imageUrl: image, pageUrl: url });
+
+      // save file in csv
+      // fs.appendFile('result.csv', `${title}, ${price}, ${image}, ${url}`, function (err) {
+      //   if (err) throw err;
+      // });
     }
   }
+
+  // 
+  fs.writeFile('result.json', JSON.stringify(laptopItems, null, 2), (err) => {
+    if (err) throw err;
+    console.log('Data has been saved to result.json');
+  });
+
   // await page.waitForSelector('li .a-list', { visible: true });
 
   // const isDisabled = await page.$('li .a-disabled .a-last') !== null;
@@ -66,6 +75,7 @@ const fs = require('fs');
   //   await page.click("li .a-last");
   // }
   // }
+
   // console.log(laptomItems);
   // await browser.close();
 })();
