@@ -22,6 +22,7 @@ const fs = require('fs');
       let price = null;
       let image = null;
       let url = null;
+      let review = null;
 
       // for each element attempt to retrieve the title if there is one (some elements in here may not have a title)
       try {
@@ -52,10 +53,21 @@ const fs = require('fs');
         // console.log('No URL found for this element');
       }
 
+      try {
+        review = await page.evaluate(el => el.querySelector('div.a-section.a-spacing-none.a-spacing-top-micro')?.textContent, laptop);
+      } catch (err) {
+        // console.log('No URL found for this element');
+      }
       if (title !== null && title !== undefined) {
-        laptopItems.push({ title: title, price: price, imageUrl: image, pageUrl: url });
+        laptopItems.push({
+          title: title,
+          price: price,
+          imageUrl: image,
+          pageUrl: url,
+          review: review,
+        });
         // save file in csv
-        // fs.appendFile('result.csv', `${title}, ${price}, ${image}, ${url}`, function (err) {
+        // fs.appendFile('result.csv', `${title}, ${price}, ${image}, ${url}`, function (err) { 
         //   if (err) throw err;
         // });
       }
