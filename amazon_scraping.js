@@ -23,6 +23,7 @@ const fs = require('fs');
       let image = null;
       let url = null;
       let review = null;
+      let delivery = null;
 
       // for each element attempt to retrieve the title if there is one (some elements in here may not have a title)
       try {
@@ -58,6 +59,11 @@ const fs = require('fs');
       } catch (err) {
         // console.log('No URL found for this element');
       }
+      try {
+        delivery = await page.evaluate(el => el.querySelector('div.s-align-children-center')?.textContent, laptop);
+      } catch (err) {
+        // console.log('No URL found for this element');
+      }
       if (title !== null && title !== undefined) {
         laptopItems.push({
           title: title,
@@ -65,6 +71,7 @@ const fs = require('fs');
           imageUrl: image,
           pageUrl: url,
           review: review,
+          delivery: delivery,
         });
         // save file in csv
         // fs.appendFile('result.csv', `${title}, ${price}, ${image}, ${url}`, function (err) { 
