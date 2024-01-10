@@ -15,8 +15,8 @@ const fs = require('fs');
   let laptopItems = [];
   let isBtnDisabled = false;
 
+  let laptops = await page.$$('.s-result-item');
   while (!isBtnDisabled) {
-    let laptops = await page.$$('.s-result-item');
     for (const laptop of laptops) {
       let title = null;
       let price = null;
@@ -72,23 +72,19 @@ const fs = require('fs');
           await Promise.all([
             // Wait for navigation to complete
             page.waitForNavigation({ waitUntil: 'networkidle0' }),
-            page.click('div > span > a.s-pagination-item.s-pagination-next'),
+            page.click('div > span > a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator'),
           ]);
-
-        // Update the laptops array for the new page
-        laptops = await page.$$('.s-result-item');
       } catch (e) {
         // console.log(e);
       }
     }
-    console.log(laptopItems.length);
   }
 
 
   // save file in json format
   fs.writeFile('result.json', JSON.stringify(laptopItems, null, 2), (err) => {
     if (err) throw err;
-    console.log('Data has been saved to result.json');
+    console.log('Data has been saved to result.json. Total Data:', laptopItems.length);
   });
 
   await browser.close();
@@ -98,3 +94,4 @@ const fs = require('fs');
 // parent class="s-pagination-strip"
 // class="s-pagination-item s-pagination-next s-pagination-button s-pagination-separator"
 // class="s-pagination-item s-pagination-next s-pagination-disabled "
+
