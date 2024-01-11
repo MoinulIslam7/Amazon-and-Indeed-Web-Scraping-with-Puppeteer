@@ -1,10 +1,10 @@
-# Amazon Web Scraping with Puppeteer
+# Amazon & Indeed Web Scraping with Puppeteer
 
-This project demonstrates web scraping capabilities using Puppeteer, a Node.js library, to extract information from Amazon's website, specifically focusing on gaming laptops in search results.
+This project demonstrates web scraping capabilities using Puppeteer, a Node.js library, to extract information from both Amazon and Indeed websites. The focus is on gathering details about gaming laptops from Amazon and job listings from Indeed search results.
 
 ## Introduction
 
-The goal of this project is to gather essential details about gaming laptops available on Amazon, including their titles, prices, images, and corresponding page URLs. Puppeteer is employed to navigate through the search results, extract relevant data, and store it in various formats for further analysis.
+The goal of this project is to extract essential details from Amazon's gaming laptop search results and Indeed job listings. Puppeteer is employed to navigate through the pages, extract relevant data, and store it in various formats for further analysis.
 
 ## Prerequisites
 
@@ -20,21 +20,29 @@ Ensure you have Node.js installed. If not, download and install it from the [off
     npm install puppeteer
     ```
 
-## Output
+## Running the Scripts
 
-After running the scraping script (`amazon_scraping.js`), the extracted data will be stored in two different formats:
+### Amazon Web Scraping
 
-- **JSON**: The information gathered from Amazon's search results, including laptop titles, prices, images, and page URLs, will be saved in a structured JSON format within the `result.json` file.
+Execute the Amazon scraping script by running the following command in your terminal:
 
-- **CSV**: Although the script contains commented-out code for saving data to a CSV file (`result.csv`), by uncommenting this code within the script, users can also obtain the scraped information in a comma-separated values (CSV) format.
-
-Please note that the JSON file (`result.json`) will contain a structured representation of the scraped data, whereas the CSV file (`result.csv`) can be enabled within the script for a tabular representation of the same information.
-
-
-## Running the Script
-
-Execute the script by running the following command in your terminal:
-
-```bash
 node amazon_scraping.js
 
+
+### Indeed Web Scraping
+
+Execute the Indeed scraping script by running the following command in your terminal:
+
+node indeed_scraping.js
+
+
+
+## Output
+
+After running each scraping script, the extracted data will be stored in different formats:
+
+- **JSON**: The information gathered from Amazon's gaming laptop search results and Indeed job listings will be saved in structured JSON format within their respective result files (amazon_result.json and indeed_result.json).
+
+- **CSV**: Although the scripts contain commented-out code for saving data to CSV files (amazon_result.csv and indeed_result.csv), users can uncomment this code to obtain the scraped information in a comma-separated values (CSV) format.
+
+Please note that the JSON files will contain a structured representation of the scraped data, whereas the CSV files can be enabled within the scripts for a tabular representation of the same information.
