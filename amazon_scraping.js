@@ -1,19 +1,17 @@
-const puppeteer = require('puppeteer');
-const fs = require('fs');
+// main.js
+const { launchBrowser, goToPage, saveToFile } = require('./utils/helper');
 
 (async () => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    defaultViewport: false,
-    userDataDir: './tmp'
-  });
+  const browser = await launchBrowser();
   const page = await browser.newPage();
+  console.log('Browser and page launched succesfully!')
 
-  await page.goto('https://www.amazon.com/s?k=gaming+laptop');
-
+  const url = 'https://www.amazon.com/s?k=gaming+laptop';
+  await goToPage(page, url);
 
   let laptopItems = [];
   let isBtnDisabled = false;
+  console.log('Please wait data is loading...');
 
   let laptops = await page.$$('.s-result-item');
   while (!isBtnDisabled) {
@@ -33,40 +31,18 @@ const fs = require('fs');
         console.log(err);
       }
 
-      // for each element try to retrieve the price
+      // for each element try to retrieve the price, image, url, review, delivery data
       try {
         price = await page.evaluate(el => el.querySelector('span .a-price > .a-offscreen')?.textContent, laptop);
-      } catch (err) {
-        console.log('no price found for this element');
-      }
-
-      // for each element try to retrieve the image url
-      try {
         image = await page.evaluate(el => el.querySelector('.s-image').getAttribute('src'), laptop);
-      } catch (err) {
-        // console.log('no image found for element');
-      }
-
-      // for each element try to receive page URL
-      try {
         url = await page.evaluate(el => el.querySelector('.a-link-normal.s-underline-text.s-underline-link-text.s-link-style.a-text-normal').href, laptop);
-      } catch (err) {
-        // console.log('No URL found for this element');
-      }
-
-      //for each element try to receive review and bought past month 
-      try {
         review = await page.evaluate(el => el.querySelector('div.a-section.a-spacing-none.a-spacing-top-micro')?.textContent, laptop);
-      } catch (err) {
-        // console.log('No URL found for this element');
-      }
-
-      // for each element try to receive delivery date
-      try {
         delivery = await page.evaluate(el => el.querySelector('div.s-align-children-center')?.textContent, laptop);
       } catch (err) {
-        // console.log('No URL found for this element');
+
+        console.log('Something Went Wrong');
       }
+
       if (title !== null && title !== undefined) {
         laptopItems.push({
           title: title,
@@ -101,19 +77,10 @@ const fs = require('fs');
       }
     }
   }
+  console.log('All data loaded succesfully!!');
 
-
-  // save file in json format
-  fs.writeFile('result.json', JSON.stringify(laptopItems, null, 2), (err) => {
-    if (err) throw err;
-    console.log('Data has been saved to result.json. Total Data:', laptopItems.length);
-  });
+  // save data into json file
+  await saveToFile(laptopItems, 'data/amazon.json');
 
   await browser.close();
 })();
-
-// related class 
-// parent class="s-pagination-strip"
-// class="s-pagination-item s-pagination-next s-pagination-button s-pagination-separator"
-// class="s-pagination-item s-pagination-next s-pagination-disabled "
-
